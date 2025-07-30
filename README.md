@@ -14,10 +14,6 @@
     •
     <a href="#usage">Usage</a>
     •
-    <a href="#usage">Extract Segments</a>
-    •
-    <a href="#usage">Analyze Results</a>
-    •
     <a href="#citation">Citation</a>
     •
     <a href="#license">License</a>
