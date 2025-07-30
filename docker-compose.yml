@@ -1,0 +1,12 @@
+services:
+  text-segmentation:
+    image: text-segmentation
+    container_name: segmentation
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/app
+      - ../datasets/:/data
+    ports:
+      - "11434:11434"
