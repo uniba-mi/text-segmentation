@@ -42,7 +42,7 @@ Afterwards run `docker compose run text-segmentation` to open the bash, through 
 Four variants are implemented here, three using the TextTiling approach from Hearst (see [https://aclanthology.org/J97-1003/](https://aclanthology.org/J97-1003/)) and one by applying GPT-4o (see [https://openai.com/index/hello-gpt-4o/](https://openai.com/index/hello-gpt-4o/))
 
 #### For TextTiling:
-- Parameter configurations are available regarding two parameters, as used in the original publication from Hearst, see [https://aclanthology.org/J97-1003/](https://aclanthology.org/J97-1003/):
+- Parameter configurations are available for two parameters, as used in the original publication from Hearst, see [https://aclanthology.org/J97-1003/](https://aclanthology.org/J97-1003/):
     - *w*: The size of pseudosentences or token-sequence size
     - *k*: The block size used in the comparison mechanism
 - Three different parameter sets are included in as configured:
@@ -51,12 +51,8 @@ Four variants are implemented here, three using the TextTiling approach from Hea
     - `python segment-extractor.py texttiling_all` processes the input text using the parameters of w=[1,2,3,5,8,10,15,20,30,40,50] and k=[1,2,3,5,8,10,15,20,30,40,50]
 
 #### For GPT-4o
-- To use GPT-4o add your OpenAI-API-key in file [segment-extractor.py](./segment-extractor.py) in line 22.
+- To use GPT-4o add your OpenAI-API-key in file [segment-extractor.py](./segment-extractor.py) in line 22
 - Afterwards simply run `python segment-extractor.py gpt`
-
-* Issue: `<repository_URL>/issues/<issue_id>`
-* License: `<repository_URL>/blob/<path_to_license_file>`
-* Readme file: `<repository_URL>/blob/<path_to_readme_file>`
 
 ### Analyze Results
 Simply call `python result-analzyer.py`, provided that the output files from the extraction scripts produced a JSON file, that is available in the [data](./data) folder.
