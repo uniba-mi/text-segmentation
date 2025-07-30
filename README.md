@@ -3,7 +3,9 @@
     <br>
 </p>
     
-<h2 align="center">Contrasting Traditional Models and LLMs: An Evaluation Based on Text Segmentation</h2>
+<h2 align="center">Contrasting Traditional Models and LLMs:
+
+An Evaluation Based on Text Segmentation</h2>
 
 <p align="center">
     <a href="#summary">Summary</a>
