@@ -27,7 +27,7 @@ This repository contains the code produced for applying the text segmentation ap
 
 ## Installation and Prerequisites
 
-Thanks to Docker, only [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/install/) are required for using the tool.
+Thanks to Docker, only [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/install/) are required for using the the scripts.
 
 ## Data
 Our dataset is unfortunately not publicly available.
