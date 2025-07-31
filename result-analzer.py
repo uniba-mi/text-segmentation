@@ -11,20 +11,12 @@ args = parser.parse_args()
 
 method = args.method
 path_checked_video_segments = '/app/data/video_segments_checked.json'
-path_results_gpt = '/app/data/video_transcripts.json'
-path_results_texttiling = '/app/data/video_transcripts.json'
+path_results = '/app/data/video_transcripts.json'
 path_output_statistics = '/app/data/results-statistics.csv'
 
-if method == SegmentationMethod.texttiling:
-    # load all results from texttiling as dict; key are the segmentids, values the segments
-    results_texttiling = {}
-    with open(path_results_texttiling, 'r', encoding="utf8") as jsonfile:
-        results_texttiling = json.load(jsonfile)
-else:
-    # load all results from gpt as dict; key are the segmentids, values the segments
-    results = {}
-    with open(path_results_gpt, 'r', encoding="utf8") as jsonfile:
-        results_chatgpt = json.load(jsonfile)
+results = {}
+with open(path_results, 'r', encoding="utf8") as jsonfile:
+    results = json.load(jsonfile)
 
 # load all input transcripts as dict; key are the segmentids, values the segments
 input_transcripts = {}
@@ -148,21 +140,21 @@ def pretty_print_statistics(statistics, model):
 csv_statistics = []
 
 if method == SegmentationMethod.texttiling:
-    for elem in results_texttiling:
+    for elem in results:
         print(elem)
-        current_result = get_statistics(results_texttiling[elem])
+        current_result = get_statistics(results[elem])
         csv_statistics.append(pretty_print_statistics(current_result, f"texttiling({elem})"))
         print("==========================")
     
     # save all parameter configuration separately
-    for elem in results_texttiling:
+    for elem in results:
         print(elem)
-        file = path_results_texttiling + elem.replace(":","") + ".json"
+        file = results + elem.replace(":","") + ".json"
         with open(file, 'w', encoding="utf8") as jsonfile:
-            json.dump(results_texttiling[elem], jsonfile, ensure_ascii=False)
+            json.dump(results[elem], jsonfile, ensure_ascii=False)
             print(f"done saving parameter config {elem} segments produced by texttiling")
 else :
-    statistics_chatgpt = get_statistics(results_chatgpt)
+    statistics_chatgpt = get_statistics(results)
     csv_statistics.append(pretty_print_statistics(statistics_chatgpt, "chatgpt"))
     print("==========================")
 
