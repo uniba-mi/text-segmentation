@@ -11,8 +11,8 @@ args = parser.parse_args()
 
 method = args.method
 path_checked_video_segments = '/app/data/video_segments_checked.json'
-path_results = '/app/data/video_transcripts-gpt.json'
-path_output_statistics = '/app/data/results-statistics-gpt.csv'
+path_results = '/app/data/video_transcripts.json'
+path_output_statistics = '/app/data/results-statistics.csv'
 
 results = {}
 with open(path_results, 'r', encoding="utf8") as jsonfile:
