@@ -57,8 +57,27 @@ Four variants are implemented here, three using the TextTiling approach from Hea
 - Afterwards simply run `python segment-extractor.py gpt`
 
 ### Analyze Results
-Simply call `python result-analzyer.py`, provided that the output files from the extraction scripts produced a JSON file, that is available in the [data](./data) folder.
+Simply call `python result-analzyer.py texttiling` to analyze the Results from TextTiling or `python result-analzyer.py gpt` for GPT-4o, provided that the output files from the extraction scripts produced a JSON file (./data/video_transcripts.json), that is available in the [data](./data) folder.
 
+The script will present the results on the commandline and additionally in the ./data/results-statistics.csv file.
+The columns present the following metrics:
+- Column 1: Name of the model and parameter configuration, if applicable.
+- Columns 2-8: Only the first segment is processed (as a small sample): 
+    - Column 2: Number of segments
+    - Column 3: Average length per segment in number of sentences
+    - Column 4: Average length per segment in number of tokens
+    - Column 5: Average length per segment in number of characters
+    - Column 6: Length of transcript in number of sentences
+    - Column 7: Length of transcript in number of tokens
+    - Column 8: Length of transcript in number of characters
+- Columns 9-15: All segments are processed, and values are averaged:
+    - Column 9: Average number of segments
+    - Column 10: Average length per segment in number of sentences
+    - Column 11: Average length per segment in number of tokens
+    - Column 12: Average length per segment in number of characters
+    - Column 13: Average length of transcript in number of sentences
+    - Column 14: Average length of transcript in number of tokens
+    - Column 15: Average length of transcript in number of characters
 
 ## Citation
 If you use this software, please cite it as below: 
