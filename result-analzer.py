@@ -149,7 +149,7 @@ if method == SegmentationMethod.texttiling:
     # save all parameter configuration separately
     for elem in results:
         print(elem)
-        file = results + elem.replace(":","") + ".json"
+        file = path_results + elem.replace(":","") + ".json"
         with open(file, 'w', encoding="utf8") as jsonfile:
             json.dump(results[elem], jsonfile, ensure_ascii=False)
             print(f"done saving parameter config {elem} segments produced by texttiling")
