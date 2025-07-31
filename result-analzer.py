@@ -155,7 +155,7 @@ if method == SegmentationMethod.texttiling:
             print(f"done saving parameter config {elem} segments produced by texttiling")
 else :
     statistics_chatgpt = get_statistics(results)
-    csv_statistics.append(pretty_print_statistics(statistics_chatgpt, "chatgpt"))
+    csv_statistics.append(pretty_print_statistics(statistics_chatgpt, "gpt-4o"))
     print("==========================")
 
 print(csv_statistics)
