@@ -11,8 +11,8 @@ args = parser.parse_args()
 
 method = args.method
 path_checked_video_segments = '/app/data/video_segments_checked.json'
-path_results = '/app/data/video_transcripts.json'
-path_output_statistics = '/app/data/results-statistics.csv'
+path_results = '/app/data/video_transcripts-gpt.json'
+path_output_statistics = '/app/data/results-statistics-gpt.csv'
 
 results = {}
 with open(path_results, 'r', encoding="utf8") as jsonfile:
@@ -138,7 +138,7 @@ def pretty_print_statistics(statistics, model):
 
 
 csv_statistics = []
-
+csv_statistics.append(["model-name","sample-number_of_segments","sample-avg_length_per_segment_in_sentences","sample-avg_length_per_segment_in_tokens","sample-avg_length_per_segment_in_characters", "sample-length_of_transcript_in_sentences", "sample-length_of_transcript_in_tokens", "sample-length_of_transcript_in_characters","number_of_segments","avg_length_per_segment_in_sentences","avg_length_per_segment_in_tokens","avg_length_per_segment_in_characters", "length_of_transcript_in_sentences", "length_of_transcript_in_tokens", "length_of_transcript_in_characters"])
 if method == SegmentationMethod.texttiling:
     for elem in results:
         print(elem)
