@@ -1,3 +1,4 @@
+model-name,sample-number_of_segments,sample-avg_length_per_segment_in_sentences,sample-avg_length_per_segment_in_tokens,sample-avg_length_per_segment_in_characters,sample-length_of_transcript_in_sentences,sample-length_of_transcript_in_tokens,sample-length_of_transcript_in_characters,number_of_segments,avg_length_per_segment_in_sentences,avg_length_per_segment_in_tokens,avg_length_per_segment_in_characters,length_of_transcript_in_sentences,length_of_transcript_in_tokens,length_of_transcript_in_characters;
 texttiling(w:1;k:1),1,168.0,3813.0,21033.0,168,3813,21033,19.692,32.338,437.985,2427.222,89.07,1115.029,5960.797
 texttiling(w:1;k:2),61,2.754,62.508,343.82,168,3813,21033,30.366,4.133,57.799,318.793,89.07,1115.029,5960.797
 texttiling(w:1;k:3),75,2.24,50.84,279.453,168,3813,21033,30.994,2.919,39.806,218.932,89.07,1115.029,5960.797
