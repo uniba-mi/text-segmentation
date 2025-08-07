@@ -1,4 +1,4 @@
-import json, nltk, re, csv, argparse
+import json, nltk, re, csv, argparse, statistics
 from enum import Enum
 
 class SegmentationMethod(str, Enum):
@@ -12,7 +12,7 @@ args = parser.parse_args()
 method = args.method
 path_checked_video_segments = '/app/data/video_segments_checked.json'
 path_results = '/app/data/video_transcripts.json'
-path_output_statistics = '/app/data/results-statistics.csv'
+path_output_statistics = '/app/data/results-statistics4.csv'
 
 results = {}
 with open(path_results, 'r', encoding="utf8") as jsonfile:
@@ -30,14 +30,22 @@ def get_average_length_per_segment(segments):
         segments_as_list.append(elem)
     avg_chars = sum(map(len, segments_as_list)) / len(segments_as_list)
     avg_token_per_segment = []
-    for elem in segments_as_list:
-        avg_token_per_segment.append(len(nltk.word_tokenize(elem)))
-    avg_tokens = sum(avg_token_per_segment) / len(avg_token_per_segment)
     avg_sentences_per_segment = []
+    length_of_segmented_transcript_in_sentences = []
+    length_of_segmented_transcript_in_tokens = []
+    length_of_segmented_transcript_in_chars = []
     for elem in segments_as_list:
-        avg_sentences_per_segment.append(len(nltk.sent_tokenize(elem)))
+        sent = nltk.sent_tokenize(elem)
+        token = nltk.word_tokenize(elem)
+        avg_token_per_segment.append(len(token))
+        avg_sentences_per_segment.append(len(sent))
+        length_of_segmented_transcript_in_sentences.append(len(sent))
+        length_of_segmented_transcript_in_tokens.append(len(token))
+        length_of_segmented_transcript_in_chars.append(len(elem))
+
+    avg_tokens = sum(avg_token_per_segment) / len(avg_token_per_segment)
     avg_sentences = sum(avg_sentences_per_segment) / len(avg_sentences_per_segment)
-    return avg_sentences, avg_tokens, avg_chars
+    return avg_sentences, avg_tokens, avg_chars, length_of_segmented_transcript_in_sentences, length_of_segmented_transcript_in_tokens, length_of_segmented_transcript_in_chars
 
 def get_statistics(results_as_list):
     result_dict = {}
@@ -48,25 +56,36 @@ def get_statistics(results_as_list):
         present_dict["video_transcript"] = input_transcripts[elem]
         present_dict["produced_segments"] = present_segments
         present_dict["number_of_segments"] = len(re.split(r"\n\n", present_segments))
-        length_sentences, length_tokens, length_chars = get_average_length_per_segment(present_segments)
+        length_sentences, length_tokens, length_chars, length_of_segmented_transcript_in_sentences, length_of_segmented_transcript_in_tokens, length_of_segmented_transcript_in_chars = get_average_length_per_segment(present_segments)
+        if elem == "75":
+            print("XX")
+            print(results_as_list[elem])
+            print(length_of_segmented_transcript_in_sentences)
+            print(length_of_segmented_transcript_in_tokens)
         present_dict["avg_length_per_segment_in_sentences"] = round(length_sentences, 3)
         present_dict["avg_length_per_segment_in_tokens"] = round(length_tokens, 3)
         present_dict["avg_length_per_segment_in_chars"] = round(length_chars, 3)
         present_dict["length_of_transcript_in_sentences"] = round(len(nltk.sent_tokenize(input_transcripts[elem])), 3)
         present_dict["length_of_transcript_in_tokens"] = round(len(nltk.word_tokenize(input_transcripts[elem])), 3)
         present_dict["length_of_transcript_in_chars"] = round(len(input_transcripts[elem]), 3)
+        present_dict["length_of_segmented_transcript_in_sentences"] = length_of_segmented_transcript_in_sentences
+        present_dict["length_of_segmented_transcript_in_tokens"] = length_of_segmented_transcript_in_tokens
+        present_dict["length_of_segmented_transcript_in_chars"] = length_of_segmented_transcript_in_chars
         result_dict[elem] = present_dict
     return result_dict
 
-def pretty_print_statistics(statistics, model):
-    print(f"Statistics for model {model} are as follows: ")
+def pretty_print_statistics(my_statistics, model):
+    print(f"Statistics for model {model} are as follows:\n")
     number_of_segments = []
     avg_length_per_segment_in_sentences = []
     avg_length_per_segment_in_tokens = []
     avg_length_per_segment_in_chars = []
     length_of_transcript_in_sentences = []
+    length_of_segmented_transcript_in_sentences = []
     length_of_transcript_in_tokens = []
+    length_of_segmented_transcript_in_tokens = []
     length_of_transcript_in_chars = []
+    length_of_segmented_transcript_in_chars = []
 
     number_segments_single = 0
     avg_length_per_segment_sentences_single = 0
@@ -84,32 +103,42 @@ def pretty_print_statistics(statistics, model):
     length_transcript_tokens_all = 0
     length_transcript_chars_all = 0
 
-    for elem in statistics:
-        number_of_segments.append(statistics[elem]["number_of_segments"])
-        avg_length_per_segment_in_sentences.append(statistics[elem]["avg_length_per_segment_in_sentences"])
-        avg_length_per_segment_in_tokens.append(statistics[elem]["avg_length_per_segment_in_tokens"])
-        avg_length_per_segment_in_chars.append(statistics[elem]["avg_length_per_segment_in_chars"])
-        length_of_transcript_in_sentences.append(statistics[elem]["length_of_transcript_in_sentences"])
-        length_of_transcript_in_tokens.append(statistics[elem]["length_of_transcript_in_tokens"])
-        length_of_transcript_in_chars.append(statistics[elem]["length_of_transcript_in_chars"])
-    for elem in statistics:
+    for elem in my_statistics:
+        number_of_segments.append(my_statistics[elem]["number_of_segments"])
+        avg_length_per_segment_in_sentences.append(my_statistics[elem]["avg_length_per_segment_in_sentences"])
+        avg_length_per_segment_in_tokens.append(my_statistics[elem]["avg_length_per_segment_in_tokens"])
+        avg_length_per_segment_in_chars.append(my_statistics[elem]["avg_length_per_segment_in_chars"])
+        length_of_transcript_in_sentences.append(my_statistics[elem]["length_of_transcript_in_sentences"])
+        length_of_transcript_in_tokens.append(my_statistics[elem]["length_of_transcript_in_tokens"])
+        length_of_transcript_in_chars.append(my_statistics[elem]["length_of_transcript_in_chars"])
+        length_of_segmented_transcript_in_sentences.append(my_statistics[elem]["length_of_segmented_transcript_in_sentences"])
+        length_of_segmented_transcript_in_tokens.append(my_statistics[elem]["length_of_segmented_transcript_in_tokens"])
+        length_of_segmented_transcript_in_chars.append(my_statistics[elem]["length_of_segmented_transcript_in_chars"])
+    for elem in my_statistics:
         print(f"For just the first transcript, sample statistics:")
-        number_segments_single = statistics[elem]["number_of_segments"]
+        number_segments_single = my_statistics[elem]["number_of_segments"]
         print(f'Number of segments for one transcript: {number_segments_single}')
-        avg_length_per_segment_sentences_single = statistics[elem]["avg_length_per_segment_in_sentences"]
+        avg_length_per_segment_sentences_single = my_statistics[elem]["avg_length_per_segment_in_sentences"]
         print(f'Avg_length_per_segment_in_sentences for one transcript: {avg_length_per_segment_sentences_single}')
-        avg_length_per_segment_tokens_single = statistics[elem]["avg_length_per_segment_in_tokens"]
+        avg_length_per_segment_tokens_single = my_statistics[elem]["avg_length_per_segment_in_tokens"]
         print(f'Avg_length_per_segment_in_tokens for one transcript: {avg_length_per_segment_tokens_single}')
-        avg_length_per_segment_chars_single = statistics[elem]["avg_length_per_segment_in_chars"]
+        avg_length_per_segment_chars_single = my_statistics[elem]["avg_length_per_segment_in_chars"]
         print(f'Avg_length_per_segment_in_chars for one transcript: {avg_length_per_segment_chars_single}')
-        length_transcript_sentences_single = statistics[elem]["length_of_transcript_in_sentences"]
+        length_transcript_sentences_single = my_statistics[elem]["length_of_transcript_in_sentences"]
         print(f'Length_of_transcript_in_sentences for one transcript: {length_transcript_sentences_single}')
-        length_transcript_tokens_single = statistics[elem]["length_of_transcript_in_tokens"]
+        length_transcript_tokens_single = my_statistics[elem]["length_of_transcript_in_tokens"]
         print(f'Length_of_transcript_in_tokens for one transcript: {length_transcript_tokens_single}')
-        length_transcript_chars_single = statistics[elem]["length_of_transcript_in_chars"]
+        length_transcript_chars_single = my_statistics[elem]["length_of_transcript_in_chars"]
         print(f'Length_of_transcript_in_chars for one transcript: {length_transcript_chars_single}')
+        length_of_segmented_transcript_in_sentences_single = my_statistics[elem]["length_of_segmented_transcript_in_sentences"]
+        print(f'Length_of_segmented_transcript_in_sentences for one transcript: {length_of_segmented_transcript_in_sentences_single}')
+        length_of_segmented_transcript_in_tokens_single = my_statistics[elem]["length_of_segmented_transcript_in_tokens"]
+        print(f'Length_of_segmented_transcript_in_tokens for one transcript: {length_of_segmented_transcript_in_tokens_single}')
+        length_of_segmented_transcript_in_chars_single = my_statistics[elem]["length_of_segmented_transcript_in_chars"]
+        print(f'Length_of_segmented_transcript_in_chars for one transcript: {length_of_segmented_transcript_in_chars_single}')
         print()
         break
+
     print(f"For all segments produced by model {model}, the combined statistics are: ")
     number_segments_all_segments = round(sum(number_of_segments)/len(number_of_segments), 3)
     print(f"Number of segments averaged across all segments: {number_segments_all_segments}")
@@ -127,18 +156,41 @@ def pretty_print_statistics(statistics, model):
     print(f"Length_of_transcript_in_chars averaged across all segments: {length_transcript_chars_all}")
 
     print(f"Length_of_transcript_in_sentences total: {sum(length_of_transcript_in_sentences)}")
+    print(length_of_segmented_transcript_in_sentences)
     print(f"Length_of_transcript_in_tokens total: {sum(length_of_transcript_in_tokens)}")
+    print(length_of_segmented_transcript_in_tokens)
     print(f"Length_of_transcript_in_chars total: {sum(length_of_transcript_in_chars)}")
+
+    print(f"Number of segments per transcript: {number_of_segments}")
+    number_of_segments_stdev = round(statistics.stdev(number_of_segments), 3)
+    print(f"Standard Deviation number_of_segments: {number_of_segments_stdev}")
+    sentences = []
+    for transcript in length_of_segmented_transcript_in_sentences:
+        sentences.append(round(statistics.mean(transcript), 3))
+    sentences_stdev = round(statistics.mean(sentences), 3)
+    print(f"Standard Deviation length_of_transcript_in_sentences: {sentences_stdev}")
+    tokens = []
+    for transcript in length_of_segmented_transcript_in_tokens:
+        tokens.append(round(statistics.mean(transcript), 3))
+    tokens_stdev = round(statistics.stdev(tokens), 3)
+    print(f"Standard Deviation length_of_transcript_in_tokens: {tokens_stdev}")
+    chars = []
+    for transcript in length_of_segmented_transcript_in_chars:
+        chars.append(round(statistics.mean(transcript), 3))
+    chars_stdev = round(statistics.stdev(chars), 3)
+    print(f"Standard Deviation length_of_transcript_in_chars: {chars_stdev}")
+
 
     combined_statistics = []
     combined_statistics.append(model)
-    combined_statistics.extend([number_segments_single, avg_length_per_segment_sentences_single, avg_length_per_segment_tokens_single, avg_length_per_segment_chars_single, length_transcript_sentences_single, length_transcript_tokens_single, length_transcript_chars_single, number_segments_all_segments, avg_length_per_segment_sentences_all, avg_length_per_segment_tokens_all, avg_length_per_segment_chars_all, length_transcript_sentences_all, length_transcript_tokens_all, length_transcript_chars_all])
+    combined_statistics.extend([number_segments_single, avg_length_per_segment_sentences_single, avg_length_per_segment_tokens_single, avg_length_per_segment_chars_single, length_transcript_sentences_single, length_transcript_tokens_single, length_transcript_chars_single, number_segments_all_segments, avg_length_per_segment_sentences_all, avg_length_per_segment_tokens_all, avg_length_per_segment_chars_all, length_transcript_sentences_all, length_transcript_tokens_all, length_transcript_chars_all, number_of_segments, number_of_segments_stdev, sentences, tokens, chars, sentences_stdev, tokens_stdev, chars_stdev])
 
     return combined_statistics
 
 
 csv_statistics = []
-csv_statistics.append(["model-name","sample-number_of_segments","sample-avg_length_per_segment_in_sentences","sample-avg_length_per_segment_in_tokens","sample-avg_length_per_segment_in_characters", "sample-length_of_transcript_in_sentences", "sample-length_of_transcript_in_tokens", "sample-length_of_transcript_in_characters","number_of_segments","avg_length_per_segment_in_sentences","avg_length_per_segment_in_tokens","avg_length_per_segment_in_characters", "length_of_transcript_in_sentences", "length_of_transcript_in_tokens", "length_of_transcript_in_characters"])
+csv_statistics.append(["model-name","sample-number_of_segments","sample-avg_length_per_segment_in_sentences","sample-avg_length_per_segment_in_tokens","sample-avg_length_per_segment_in_characters", "sample-length_of_transcript_in_sentences", "sample-length_of_transcript_in_tokens", "sample-length_of_transcript_in_characters","number_of_segments","avg_length_per_segment_in_sentences","avg_length_per_segment_in_tokens","avg_length_per_segment_in_characters", "length_of_transcript_in_sentences", "length_of_transcript_in_tokens", "length_of_transcript_in_characters", "length_segments","number_of_segments_stdev", "sentences", "tokens", "chars", "length_of_transcript_in_sentences_stdev", "length_of_transcript_in_tokens_stdev", "length_of_transcript_in_chars_stdev"])
+
 if method == SegmentationMethod.texttiling:
     for elem in results:
         print(elem)
@@ -158,9 +210,9 @@ else :
     csv_statistics.append(pretty_print_statistics(statistics_chatgpt, "gpt-4o"))
     print("==========================")
 
-print(csv_statistics)
+# print(csv_statistics)
 
 # save to file
 with open(path_output_statistics, 'w', encoding="utf8") as csvfile:
-    writer = csv.writer(csvfile)
+    writer = csv.writer(csvfile, delimiter="\t")
     writer.writerows(csv_statistics)
