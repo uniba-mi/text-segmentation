@@ -78,6 +78,14 @@ The columns present the following metrics:
     - Column 13: Average length of transcript in number of sentences
     - Column 14: Average length of transcript in number of tokens
     - Column 15: Average length of transcript in number of characters
+    - Column 16: List of number of segments per transcript
+    - Column 17: Standard deviation for average number of segments
+    - Column 18: List of average number of sentences transcript
+    - Column 19: List of average number of tokens transcript
+    - Column 20: List of average number of characters transcript
+    - Column 21: Standard deviation for average length of segments in sentences
+    - Column 22: Standard deviation for average length of segments in tokens
+    - Column 23: Standard deviation for average length of segments in characters
 
 ## Citation
 If you use this software, please cite it as below: 
