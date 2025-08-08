@@ -57,11 +57,6 @@ def get_statistics(results_as_list):
         present_dict["produced_segments"] = present_segments
         present_dict["number_of_segments"] = len(re.split(r"\n\n", present_segments))
         length_sentences, length_tokens, length_chars, length_of_segmented_transcript_in_sentences, length_of_segmented_transcript_in_tokens, length_of_segmented_transcript_in_chars = get_average_length_per_segment(present_segments)
-        if elem == "75":
-            print("XX")
-            print(results_as_list[elem])
-            print(length_of_segmented_transcript_in_sentences)
-            print(length_of_segmented_transcript_in_tokens)
         present_dict["avg_length_per_segment_in_sentences"] = round(length_sentences, 3)
         present_dict["avg_length_per_segment_in_tokens"] = round(length_tokens, 3)
         present_dict["avg_length_per_segment_in_chars"] = round(length_chars, 3)
@@ -156,9 +151,7 @@ def pretty_print_statistics(my_statistics, model):
     print(f"Length_of_transcript_in_chars averaged across all segments: {length_transcript_chars_all}")
 
     print(f"Length_of_transcript_in_sentences total: {sum(length_of_transcript_in_sentences)}")
-    print(length_of_segmented_transcript_in_sentences)
     print(f"Length_of_transcript_in_tokens total: {sum(length_of_transcript_in_tokens)}")
-    print(length_of_segmented_transcript_in_tokens)
     print(f"Length_of_transcript_in_chars total: {sum(length_of_transcript_in_chars)}")
 
     print(f"Number of segments per transcript: {number_of_segments}")
@@ -167,7 +160,7 @@ def pretty_print_statistics(my_statistics, model):
     sentences = []
     for transcript in length_of_segmented_transcript_in_sentences:
         sentences.append(round(statistics.mean(transcript), 3))
-    sentences_stdev = round(statistics.mean(sentences), 3)
+    sentences_stdev = round(statistics.stdev(sentences), 3)
     print(f"Standard Deviation length_of_transcript_in_sentences: {sentences_stdev}")
     tokens = []
     for transcript in length_of_segmented_transcript_in_tokens:
