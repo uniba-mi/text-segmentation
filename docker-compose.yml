@@ -7,6 +7,5 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - .:/app
-      - ../datasets/:/data
     ports:
       - "11434:11434"
