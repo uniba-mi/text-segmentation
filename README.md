@@ -90,7 +90,22 @@ The columns present the following metrics:
 ## Citation
 If you use this software, please cite it as below: 
 
-*Will be added after the proceedings have been published.*
+```bibtex
+@inproceedings{jegan-henrich-2025-contrasting,
+    title = "Contrasting Traditional Models and {LLM}s: An Evaluation Based on Text Segmentation",
+    author = "Jegan, Robin  and
+      Henrich, Andreas",
+    editor = "Wartena, Christian  and
+      Heid, Ulrich",
+    booktitle = "Proceedings of the 21st Conference on Natural Language Processing (KONVENS 2025): Workshops",
+    month = sep,
+    year = "2025",
+    address = "Hannover, Germany",
+    publisher = "HsH Applied Academics",
+    url = "https://aclanthology.org/2025.konvens-2.21/",
+    pages = "274--281"
+}
+```
 
 ## License
 
