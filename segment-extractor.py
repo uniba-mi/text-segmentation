@@ -84,25 +84,26 @@ else:
         return(result)
 
     @track_emissions(project_name="texttiling")
-    def initiate_texttiling():
-
+    def initiate_texttiling(i,j):
         result = {}
-        for i in w:
-            for j in k:
-                counter = 0
-                results_texttiling = {}
-                for id in checked_segments:
-                    segments = process_transcript(checked_segments[id], i, j)
-                    counter += 1
-                    print(f"Current Iteration: w:{i},k:{j}, Transcript Counter: {counter}, Number of new Segments: {len(segments)}")
-                    results_texttiling[id] = "\n\n".join(segments)
-                current_id = f"w:{i};k:{j}"
-                result[current_id] = results_texttiling
+        counter = 0
+        results_texttiling = {}
+        for id in checked_segments:
+            segments = process_transcript(checked_segments[id], i, j)
+            counter += 1
+            print(f"Current Iteration: w:{i},k:{j}, Transcript Counter: {counter}, Number of new Segments: {len(segments)}")
+            results_texttiling[id] = "\n\n".join(segments)
+        current_id = f"w:{i};k:{j}"
+        result[current_id] = results_texttiling
         return result
     
-    start_time = timeit.default_timer()
-    results = initiate_texttiling()
-    print(f"Processing took: {timeit.default_timer() - start_time}")
+    for i in w:
+        for j in k:
+            start_time = timeit.default_timer()
+            result = initiate_texttiling(i,j)
+            current_id = f"w:{i};k:{j}"
+            results[current_id] = result
+            print(f"Processing took: {timeit.default_timer() - start_time}")
 
 # save results in JSON file
 with open('/app/data/video_transcripts.json', 'w', encoding="utf8") as jsonfile:
