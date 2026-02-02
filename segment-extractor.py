@@ -93,9 +93,7 @@ else:
             counter += 1
             print(f"Current Iteration: w:{i},k:{j}, Transcript Counter: {counter}, Number of new Segments: {len(segments)}")
             results_texttiling[id] = "\n\n".join(segments)
-        current_id = f"w:{i};k:{j}"
-        result[current_id] = results_texttiling
-        return result
+        return results_texttiling
     
     for i in w:
         for j in k:
